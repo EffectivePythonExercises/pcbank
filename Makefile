@@ -24,6 +24,8 @@ sqlc:
 test:
 	go test -v -cover ./...
 
+server:
+	go run main.go
 xx:
 	# export $(shell varlock load --format env)
 	echo "wowo----${POSTGRES_USER}" && \
@@ -31,4 +33,4 @@ xx:
 	echo "wwwww----$$POSGRES_USER==" && \
 	echo "wwwww----${APP_ENV}=="
 
-.PHONY: up createdb dropdb upgrade downgrade sqlc test xx
+.PHONY: up createdb dropdb upgrade downgrade sqlc test server xx
