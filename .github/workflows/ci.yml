@@ -1,7 +1,7 @@
 # This workflow will build a golang project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
 
-name: Go
+name: CI Test
 
 on:
   push:
@@ -9,23 +9,34 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  POSTGRES_USER: root
+  POSTGRES_PASSWORD: secret
+  POSTGRES_DB: simplebank
+  POSTGRES_HOST: localhost
+  POSTGRES_PORT: 5432
+  POSTGRES_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+
 jobs:
 
-  build:
+  test:
+    name: Test
     runs-on: ubuntu-latest
 
     services:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: root
-          POSTGRES_PASSWORD: secret
-          POSTGRES_DB: simplebank
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
 
@@ -36,6 +47,12 @@ jobs:
 
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Install golang migrate
+      run: |
+        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.3/migrate.linux-amd64.tar.gz | tar xvz
+        sudo mv migrate /usr/local/bin/
+        which migrate
     
     - name: DB setup
       run: make upgrade
