@@ -20,6 +20,10 @@ downgrade:
 sqlc:
 	sqlc compile
 	sqlc generate
+
+test:
+	go test -v -cover ./...
+
 xx:
 	# export $(shell varlock load --format env)
 	echo "wowo----${POSTGRES_USER}" && \
@@ -27,4 +31,4 @@ xx:
 	echo "wwwww----$$POSGRES_USER==" && \
 	echo "wwwww----${APP_ENV}=="
 
-.PHONY: up createdb dropdb upgrade downgrade xx
+.PHONY: up createdb dropdb upgrade downgrade sqlc test xx
