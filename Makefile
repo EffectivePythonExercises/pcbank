@@ -26,6 +26,11 @@ test:
 
 server:
 	go run main.go
+
+mock:
+	mockgen -package dbmock -destination db/mock/store.go github.com/duodecanol/simplebank/db/sqlc Store
+
+.PHONY: xx
 xx:
 	# export $(shell varlock load --format env)
 	echo "wowo----${POSTGRES_USER}" && \
@@ -33,4 +38,4 @@ xx:
 	echo "wwwww----$$POSGRES_USER==" && \
 	echo "wwwww----${APP_ENV}=="
 
-.PHONY: up createdb dropdb upgrade downgrade sqlc test server xx
+.PHONY: up createdb dropdb upgrade downgrade sqlc test server mock
