@@ -3,7 +3,6 @@ package db
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"testing"
 
 	"github.com/duodecanol/simplebank/util"
@@ -16,7 +15,7 @@ func createRandomAccount(t *testing.T) Account {
 		Balance:  util.RandomMoney(),
 		Currency: util.RandomCurrency(),
 	}
-	fmt.Printf("context.Background(), %#v", context.Background())
+
 	account, err := testQueries.CreateAccount(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, account)
