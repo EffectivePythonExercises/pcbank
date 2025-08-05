@@ -14,7 +14,7 @@ INSERT INTO transfers (
 )
 RETURNING *;
 
--- name: UpdateTransfer :exec
+-- name: UpdateTransfer :one
 UPDATE transfers
 SET
     amount = $2,

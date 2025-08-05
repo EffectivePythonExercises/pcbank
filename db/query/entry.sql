@@ -14,7 +14,7 @@ INSERT INTO entries (
 )
 RETURNING *;
 
--- name: UpdateEntry :exec
+-- name: UpdateEntry :one
 UPDATE entries
 SET
     amount = $2
