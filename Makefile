@@ -1,7 +1,12 @@
 #!make
-# export $(shell varlock load --format env)
-# POSTGRES_USER = xxx
+include app.env
 
+
+what:
+	@echo "SERVER_ADDRESS=${SERVER_ADDRESS}"
+	@echo "DB_SOURCE=${DB_SOURCE}"
+	@echo "POSTGRES_URL=${POSTGRES_URL}"
+	@echo "APP_ENV=${APP_ENV}"
 up:
 	varlock run -- docker compose up -d
 
@@ -12,10 +17,10 @@ dropdb:
 	docker compose exec postgres dropdb --username=$${POSGRES_USER} simple_bank
 
 upgrade:
-	migrate -path db/migration -database ${POSTGRES_URL}?sslmode=disable -verbose up
+	migrate -path db/migration -database ${POSTGRES_URL}?sslmode=disable -verbose up 1
 
 downgrade:
-	migrate -path db/migration -database ${POSTGRES_URL}?sslmode=disable -verbose down
+	migrate -path db/migration -database ${POSTGRES_URL}?sslmode=disable -verbose down 1
 
 sqlc:
 	sqlc compile
