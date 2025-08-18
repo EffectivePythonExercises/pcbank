@@ -8,7 +8,7 @@ what:
 	@echo "POSTGRES_URL=${POSTGRES_URL}"
 	@echo "APP_ENV=${APP_ENV}"
 up:
-	varlock run -- docker compose up -d
+	docker compose up -d
 
 createdb:
 	docker compose exec postgres createdb --username=$${POSGRES_USER} simple_bank
@@ -35,12 +35,5 @@ server:
 mock:
 	mockgen -package dbmock -destination db/mock/store.go github.com/duodecanol/simplebank/db/sqlc Store
 
-.PHONY: xx
-xx:
-	# export $(shell varlock load --format env)
-	echo "wowo----${POSTGRES_USER}" && \
-	echo "wowo----${POSTGRES_URL}" && \
-	echo "wwwww----$$POSGRES_USER==" && \
-	echo "wwwww----${APP_ENV}=="
 
 .PHONY: up createdb dropdb upgrade downgrade sqlc test server mock
